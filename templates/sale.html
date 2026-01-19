@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {{ form.prod_id.label }}
+        {{ form.prod_id }}
+        {% for error in form.prod_id.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+        <br />
+        {{ form.sale_percent.label }}
+        {{ form.sale_percent() }}
+        {% for error in form.sale_percent.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+        <br />
+        {{ form.submit() }}
+    </form>
+    {{ message }}
+    {% if items %}
+    <div class="table-container">
+        <table>
+            <caption>All of the items in stock</caption>
+            <tr>
+                <th scope="col">Product ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Num of items available</th>
+                <th scope="col">Price</th>
+            </tr>
+            {% for item in items %}
+            <tr>
+                <td>{{ item["prod_id"] }}</td>
+                <td>{{ item["name"] }}</td>
+                <td>{{ item["desc"] }}</td>
+                <td>{{ item["num_available"] }}</td>
+                <td>{{ item["price"] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}

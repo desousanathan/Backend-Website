@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <div id="user_account">
+
+    <div class="table-container">
+    {% if num_purchases_per_day %}
+        <table>
+            <caption>Previous Purchases Per Day (this week)</caption>
+            <tr>
+                <th scope="col">DATE</th>
+                <th scope="col">NUMBER OF PURCHASES</th>
+            </tr>
+            {% for item in num_purchases_per_day %}
+                <tr>
+                    <td>{{item["time"]}}</td>
+                    <td>{{item["Total Purchases"]}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>There are no previous purchases</p>
+    {% endif %}
+    </div>
+
+    {% if most_popular_items %}
+        <table>
+            <caption>The most popular items</caption>
+            <tr>
+                <th scope="col">NAME</th>
+                <th scope="col">NUMBER OF ITEMS PURCHASED</th>
+            </tr>
+            {% for item in most_popular_items %}
+            <tr>
+                <td>{{ item["name"] }}</td>
+                <td>{{ item["total_number_purchased"] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if suggestions %}
+    <div class="table-container">
+        <table>
+            <caption>Suggestions</caption>
+            <tr>
+                <th scope="col">USER ID</th>
+                <th scope="col">SUGGESTION</th>
+                <th></th>
+            </tr>
+            {% for suggestion in suggestions %}
+                <tr>
+                    <td>{{ suggestion["user_id"] }}</td>
+                    <td>{{ suggestion["suggestion"] }}</td>
+                    <td><a href="{{ url_for('remove_suggestion', suggestion=suggestion['suggestion']) }}">
+                        <img class="delete" src="{{ url_for('static', filename='/images/recycle-bin-icon.png') }}", alt="" />
+                    </a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+    </div>
+
+    {% if users %}
+        <table>
+            <tr>
+                <th scope="col">User ID</th>
+                <th scope="col">Email Address</th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user["user_id"] }}</td>
+                    <td>{{ user["email_address"] }}</td>
+                    <td><a href="{{ url_for('remove_user', user_id=user['user_id'] )}}">Remove User</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}

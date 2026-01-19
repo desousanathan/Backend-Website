@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <div class="user_account">
+        <form action="{{url_for('change_password')}}" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            {{ form.check_password.label }}
+            {{ form.check_password() }}
+            {% for error in form.check_password.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+            <br />
+            {{ form.new_password.label }}
+            {{ form.new_password() }}
+            {% for error in form.new_password.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+            <br />
+            {{ form.new_password2.label }}
+            {{ form.new_password2()}}
+            {% for error in form.new_password2.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+            <br />
+            {{ form.submit()}}
+        </form>
+    </div>
+
+    <div class="user_account">
+        <form action="{{url_for('change_email')}}" method="post" novalidate>
+            {{ form2.hidden_tag() }}
+            {{ form2.change_email.label }}
+            {{ form2.change_email() }}
+            {% for error in form2.change_email.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+            <br />
+            {{ form2.submit() }}
+        </form>
+    </div>
+
+    <h2>Previous Purchases</h2>
+    {% if prev_purchases %}
+    <div class="table-container">
+        <table>
+            <tr>
+                <th scope="col">DATE</th>
+                <th scope="col">NAME</th>
+                <th scope="col">NUMBER OF ITEMS</th>
+            </tr>
+            {% for item in prev_purchases %}
+                <tr>
+                    <td>{{item["time"]}}</td>
+                    <td>{{item["name"]}}</td>
+                    <td>{{item["num_of_items"]}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% else %}
+        <p>There are no previous purchases</p>
+    {% endif %}
+
+{% endblock %}

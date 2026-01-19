@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+        <title>{{title}}</title>
+    <head>
+    <body>
+        {% if sale %}
+            {% for item in sale %}
+                <p class="sale">{{item}}</p>
+            {% endfor %}
+        {% endif %}
+        <nav>
+            <a href="{{ url_for('index')}}">Home</a>
+            <a href="{{ url_for('store')}}">Store</a>
+            <a href="{{ url_for('cart')}}">Cart</a>
+            
+
+            {% if g.is_admin %}
+                    <a href="{{ url_for('insert_item') }}">Add New Item</a>
+                    <a href="{{ url_for('update_item') }}">Update Item</a>
+                    <a href="{{ url_for('delete') }}">Delete Item</a>
+                    <a href="{{ url_for('insert_sale')}}">Sale</a>
+            {% endif %}
+
+            {% if g.user_id %}
+                {% if g.is_admin %}
+                    <a href="{{ url_for('admin_account') }}">Admin Account</a>
+                {% else %}
+                <a href="{{ url_for('account')}}">Your Account</a>
+                {% endif %}
+                <a href="{{ url_for('logout')}}" class="User_session">Logout</a>
+            {% else%}
+                <a href="{{ url_for('register') }}" class="User_session">Register</a>
+                <a href="{{ url_for('login') }}"class="User_session">Login</a>
+            {% endif %}
+        </nav>
+        <header>
+            <h1>{{title}}</h1>
+        </header>
+        <main>
+            {% block main_content %}
+            {% endblock %}
+            {% if not g.is_admin and g.user_id %}
+                <a id="suggestion" href="{{ url_for('suggestion', next=request.url) }}">Suggestion</a>
+            {% endif %}
+        </main>
+        <footer>
+            {% if g.user_id %} 
+            <p class="User_id">User id: {{ g.user_id }}</p>
+            {% endif%}
+        </footer>
+    </body>
+</html>

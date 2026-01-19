@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block main_content %}
+<main>
+    <div id="search_bar">
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            {{ form.searchValue.label }}
+            {{ form.searchValue(class="search-form") }}
+            {% for error in form.searchValue.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+            {{ form.submit() }}
+        </form>
+    </div>
+
+    {% if items %}
+        <div class="all_items">
+        {% for item in items %}
+            <div class="item">
+                {% if item["image_filename"] %}
+                    <img class="store-image" src="{{ url_for('static', filename='uploads/' + item['image_filename']) }}"/>
+                {% else %}
+                    <p>No image available for this item.</p>
+                {% endif %}
+                <h3>{{ item["name"] }}</h3>
+                <p>{{ item["desc"] }}</p>
+                <p>{{ item["num_available"] }}</p>
+                <p>{{ item["price"] }}$</p>
+
+                <form action="{{ url_for('add_to_cart', prod_id=item['prod_id']) }}" method="post" novalidate>
+                    {{ form2.hidden_tag() }}
+                    {{ form2.num_of_items.label }}
+                    {{ form2.num_of_items() }}
+                    {% for error in error[item["prod_id"]] %}
+                        <div class="error">{{ error }}</div>
+                    {% endfor %}
+                    {{ form2.submit() }}
+                </form>
+
+                {% if item["prod_id"] in wishlist_prod_ids %}
+                    <a href="{{ url_for('delete_form_wishlist', prod_id=item['prod_id']) }}">
+                        <img class="icon" src="{{ url_for('static', filename='images/remove-from-wishlist-icon.png')}}" alt="" />
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('add_to_wishlist', prod_id=item['prod_id']) }}">
+                        <img class="icon" src="{{url_for('static', filename='images/add-to-wishlist-icon.png')}}" alt="An add to wishlist icon" />
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p>The item is not available</p>
+    {% endif %}
+</main>
+{% endblock %}

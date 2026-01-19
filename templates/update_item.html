@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <form action="" method="post" novalidate>
+        <h2>Which items would you like to change</h2>
+        {{ form.hidden_tag() }}
+        {{ form.prod_id.label }}
+        {{ form.prod_id }}
+        {% for error in form.prod_id.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <br />
+        {{form.name_check.label}} {{form.name_check()}}
+        <br />
+        {{ form.desc_check.label }} {{form.desc_check()}}
+        <br />
+        {{ form.num_available_check.label}} {{form.num_available_check()}}
+        <br />
+        {{ form.price_check.label }} {{ form.price_check() }}
+        <br />
+        {{ form.submit() }}
+    </form>
+
+    {% if message %}
+            {{ message }}
+    {% endif %}
+
+    {% if check %}
+        <form action="{{ url_for('update2', prod_id = prod_id)}}" method="post" novalidate>
+            {{ form2.hidden_tag() }}
+            {% if name_check %}
+                {{ form2.name.label }}
+                {{ form2.name() }}
+            {% endif %}
+            {% if desc_check %}
+                {{ form2.desc.label }}
+                {{ form2.desc() }}
+            {% endif %}
+            {% if num_available_check %}
+                {{ form2.num_available.label }}
+                {{ form2.num_available() }}
+            {% endif %}
+            {% if price_check %}
+                {{ form2.price.label }}
+                {{ form2.price()}}
+            {% endif %}
+            <br />
+            {{ form2.submit() }}
+        </form>
+    {% endif %}
+
+    {% if items %}
+    <div class="table-container">
+        <table>
+            <caption>All of the items in stock</caption>
+            <tr>
+                <th scope="col">Product ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Num of items available</th>
+                <th scope="col">Price</th>
+            </tr>
+            {% for item in items %}
+            <tr>
+                <td>{{ item["prod_id"] }}</td>
+                <td>{{ item["name"] }}</td>
+                <td>{{ item["desc"] }}</td>
+                <td>{{ item["num_available"] }}</td>
+                <td>{{ item["price"] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}

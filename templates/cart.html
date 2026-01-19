@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+    <h2>Your Cart</h2>
+    
+    <div class="error">{{ message }}</div>
+    
+    {% if cart %}
+    <div>
+            <table id="Cart">
+                <tr>
+                    <th scope="col">NAME</th>
+                    <th scope="col">NUMBER  OF ITEMS</th>
+                    <th scope="col">PRICE</th>
+                </tr>
+                {% for prod_id in cart %}
+                    <tr>
+                        <td>{{ names[prod_id] }}</td>
+                        <td>{{ cart[prod_id] }}</td>
+                        <td>{{ (prices.get(prod_id, 0) * cart[prod_id])|round(2) }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_from_cart', prod_id=prod_id)}}", method="post">
+                                {{form.hidden_tag()}}
+                                {{ form.num_of_items() }}
+                                {% for error in form.num_of_items.errors %}
+                                    <div class="error">{{ error }}</div>
+                                {% endfor %}
+                                {{ form.submit() }}
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th scope="row" colspan="2">Total Price($)</th>
+                    <td colspan="2">{{total_price}}</td>
+                </tr>
+            </table>
+        </div>
+    <a href="{{ url_for('checkout') }}">
+        <img id="checkout" src="{{ url_for('static', filename='images/cart-icon.png')}}" alt="" />
+    </a>
+    {% else %}
+        <p>Your cart is empty!</p>
+        <p>Start Shopping <a href="{{ url_for('store') }}">Go to Store</a></p>
+    {% endif %}
+
+
+    {% if wishlist %}
+
+        <table id="Wishlist">
+            <caption>Wishlist</caption>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Product Id</th>
+            </tr>
+            {% for user_item in wishlist %}
+            <tr>
+                <td>{{user_item ["name"]}}</td>
+                <td>{{user_item ["prod_id"]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <p>You Don't Have anything in your wishlist</p>
+    {% endif %}
+{% endblock %}

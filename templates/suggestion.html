@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        {{ form.suggestion.label }}
+        {{ form.suggestion() }}
+        {% for error in form.suggestion.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+        <br />
+        {{ form.submit() }}
+    </form>
+    {{ message }}
+
+{% endblock %}

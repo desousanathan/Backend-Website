@@ -1,0 +1,47 @@
+{% extends "base.html"%}
+
+{% block main_content %}
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
+        {{ form.hidden_tag() }}
+        {{ form.name.label }}
+        {{ form.name() }}
+        {% for error in form.name.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+        <br />
+
+        {{ form.desc.label }}
+        {{ form.desc() }}
+        {% for error in form.desc.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+        <br />
+
+        {{ form.num_available.label }}
+        {{ form.num_available() }}
+        {% for error in form.num_available.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+        <br />
+
+        {{ form.price.label }}
+        {{ form.price()}}
+        {% for error in form.price.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+        <br />
+
+        {{ form.file.label }}
+        {{ form.file() }}
+        {% for error in form.file.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+
+        <br />
+
+        {{ form.submit() }}
+    </form>
+
+    <p>{{ message }}</p>
+
+{% endblock %}
